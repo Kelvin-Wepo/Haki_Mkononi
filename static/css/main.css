@@ -1,0 +1,78 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 6px 8px rgba(0,0,0,.15);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+#message-container {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+#message-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#message-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#message-container::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+#message-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.message-sender {
+    text-align: right;
+}
+
+.message-receiver {
+    text-align: left;
+}
+
+.message-sender .message-bubble {
+    background-color: #007bff;
+    color: white;
+}
+
+.message-receiver .message-bubble {
+    background-color: #f1f1f1;
+    color: black;
+}
