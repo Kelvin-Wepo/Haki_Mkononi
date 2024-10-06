@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Cases</h2>
+
+    {% if cases %}
+    <div class="row">
+        {% for case in cases %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title">{{ case.title }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Status:</strong> {{ case.status }}</p>
+                    <p class="card-text"><strong>Description:</strong> {{ case.description|truncatewords:20 }}</p>
+                    <p class="card-text"><strong>Date Filed:</strong> {{ case.created_at|date:"d M, Y" }}</p>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{% url 'case_detail' case.id %}" class="btn btn-info">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center" role="alert">
+        You have no cases at the moment.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">File a New Case</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ case_form.title.label_tag }}
+                        {{ case_form.title }}
+                    </div>
+                    <div class="mb-3">
+                        {{ case_form.description.label_tag }}
+                        {{ case_form.description }}
+                    </div>
+                    <div class="mb-3">
+                        {{ case_form.category.label_tag }}
+                        {{ case_form.category }}
+                    </div>
+                    <div class="mb-3">
+                        {{ document_form.file.label_tag }}
+                        {{ document_form.file }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Case</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

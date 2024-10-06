@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to Haki Mkononi</h1>
+    <p class="lead">Get Instant Justice</p>
+    <hr class="my-4">
+    <p>Empowering citizens with quick and easy access to legal resources and support.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-balance-scale fa-3x mb-3"></i>
+                <h5 class="card-title">Fair and Impartial</h5>
+                <p class="card-text">We ensure that every case is treated with equal importance and impartiality.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-bolt fa-3x mb-3"></i>
+                <h5 class="card-title">Swift Resolution</h5>
+                <p class="card-text">Our platform is designed to expedite the justice process without compromising on quality.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <h5 class="card-title">Community Support</h5>
+                <p class="card-text">Connect with legal professionals and fellow citizens for guidance and support.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

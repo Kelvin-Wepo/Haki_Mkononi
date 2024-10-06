@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Messages for Case: {{ case.title }}</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body" id="message-container" style="height: 400px; overflow-y: auto;">
+            {% for message in messages_list %}
+                <div class="mb-3 {% if message.sender == request.user %}text-end{% endif %}">
+                    <div class="d-inline-block p-2 rounded {% if message.sender == request.user %}bg-primary text-white{% else %}bg-light{% endif %}" style="max-width: 70%;">
+                        <p class="mb-1">{{ message.content }}</p>
+                        <small class="text-muted">
+                            {{ message.sender.username }} - {{ message.timestamp|date:"M d, Y H:i" }}
+                        </small>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center text-muted">No messages yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <form method="post" id="message-form">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+
+        const messageForm = document.getElementById('message-form');
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(messageForm);
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            }).then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newMessages = doc.getElementById('message-container').innerHTML;
+                messageContainer.innerHTML = newMessages;
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+                messageForm.reset();
+            });
+        });
+    });
+</script>
+{% endblock %}

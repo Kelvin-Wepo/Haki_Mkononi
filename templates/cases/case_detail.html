@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">{{ case.title }}</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Category:</strong> {{ case.get_category_display }}</p>
+        <p><strong>Status:</strong> {{ case.status }}</p>
+        <p><strong>Description:</strong> {{ case.description }}</p>
+        <p><strong>Created by:</strong> {{ case.created_by.username }}</p>
+        <p><strong>Created at:</strong> {{ case.created_at }}</p>
+        {% if case.assigned_to %}
+            <p><strong>Assigned to:</strong> {{ case.assigned_to.username }}</p>
+        {% endif %}
+        
+        <h3 class="mt-4">Documents</h3>
+        <ul class="list-group">
+            {% for document in case.documents.all %}
+                <li class="list-group-item">
+                    <a href="{{ document.file.url }}" target="_blank">{{ document.file.name }}</a>
+                    (Uploaded: {{ document.uploaded_at }})
+                </li>
+            {% empty %}
+                <li class="list-group-item">No documents uploaded yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% comment %} <div class="mt-4">
+    <a href="{% url 'case_messages' case.id %}" class="btn btn-primary">View Messages</a>
+</div> {% endcomment %}
+{% endblock %}

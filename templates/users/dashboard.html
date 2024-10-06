@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Justice Web App - Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --background-color: #f4f4f4;
+            --text-color: #333;
+        }
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .navbar {
+            background-color: var(--primary-color) !important;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: #3a7bd5;
+            border-color: #3a7bd5;
+        }
+        .card-title {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Social Justice Web App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Welcome, {{ request.user.username }}!</h1>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-gavel me-2"></i>Your Cases</h5>
+                        <p class="card-text display-4">{{ user_cases_count }}</p>
+                        <a href="{% url 'case_list' %}" class="btn btn-primary">View Cases</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-file-alt me-2"></i>Documents</h5>
+                        <p class="card-text display-4">{{ user_documents_count }}</p>
+                        <a href="#" class="btn btn-primary">Manage Documents</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-bell me-2"></i>Notifications</h5>
+                        <p class="card-text display-4">{{ notifications_count }}</p>
+                        <a href="#" class="btn btn-primary">View Notifications</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Cases</h5>
+                        <ul class="list-group">
+                            {% for case in recent_cases %}
+                            <li class="list-group-item">
+                                <strong>{{ case.title }}</strong> - {{ case.get_status_display }}
+                                <br>
+                                <small>Category: {{ case.get_category_display }} | Created: {{ case.created_at|date:"M d, Y" }}</small>
+                            </li>
+                            {% empty %}
+                            <li class="list-group-item">No recent cases.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Case Search</h5>
+                        <form method="get" action="{% url 'case_search' %}">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" name="query" placeholder="Search cases...">
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" name="category">
+                                    <option value="">All Categories</option>
+                                    {% for category in case_categories %}
+                                    <option value="{{ category.0 }}">{{ category.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if request.user.profile.role == 'legal_aid' or request.user.profile.role == 'admin' %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Case Management</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Case Title</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for case in cases_to_review %}
+                                <tr>
+                                    <td>{{ case.title }}</td>
+                                    <td>{{ case.get_category_display }}</td>
+                                    <td>{{ case.get_status_display }}</td>
+                                    <td>{{ case.created_by.username }}</td>
+                                    <td>
+                                        <a href="{% url 'case_detail' case.pk %}" class="btn btn-sm btn-primary">View</a>
+                                        <a href="#" class="btn btn-sm btn-secondary">Assign</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5">No cases to review.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-4">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 Social Justice Web App
+        </div>
+    </footer>
+</body>
+</html>

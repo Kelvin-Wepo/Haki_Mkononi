@@ -1,0 +1,110 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Create Case</title>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background color */
+        }
+        .form-container {
+            margin-top: 50px;
+            background: white; /* White background for the form */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+        h2 {
+            text-align: center; /* Center title */
+            margin-bottom: 20px; /* Space below the title */
+        }
+        .btn-custom {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white; /* White text for button */
+        }
+        .btn-custom:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Create a New Case</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Case Title -->
+                <div class="form-group">
+                    <label for="title">Case Title</label>
+                    {{ case_form.title|as_crispy_field }} <!-- Use crispy forms for styling -->
+                    {% for error in case_form.title.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    {{ case_form.description|as_crispy_field }}
+                    {% for error in case_form.description.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    {{ case_form.category|as_crispy_field }}
+                    {% for error in case_form.category.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    {{ case_form.status|as_crispy_field }}
+                    {% for error in case_form.status.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="tel" id="phone_number" name="phone_number" class="form-control" pattern="^\+254[0-9]{9}$" placeholder="e.g. +2547XXXXXXXX" required>
+                    <small class="form-text text-muted">Phone number must start with +254 followed by 9 digits.</small>
+                </div>
+
+                <hr>
+                <h4>Upload Documents</h4>
+                <div class="form-group">
+                    <label for="file">Document File</label>
+                    {{ document_form.file|as_crispy_field }}
+                    {% for error in document_form.file.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-custom btn-block">Submit Case</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
