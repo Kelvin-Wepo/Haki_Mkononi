@@ -144,6 +144,8 @@ LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login' 
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
+AFRICASTALKING_API_KEY=""
+AFRICASTALKING_USERNAME=""
+AFRICASTALKING_SENDERID=""
 
 

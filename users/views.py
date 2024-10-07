@@ -14,6 +14,7 @@ import africastalking
 
 africastalking.api_key = settings.AFRICASTALKING_API_KEY
 africastalking_username = settings.AFRICASTALKING_USERNAME
+sender=settings.AFRICASTALKING_SENDERID
 
 
 def register(request):
