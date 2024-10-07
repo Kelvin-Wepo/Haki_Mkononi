@@ -7,8 +7,13 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Profile
 from django.urls import reverse
-from cases.models import Case, Document 
+from cases.models import Case, Document
+from django.conf import settings 
+import africastalking
 
+
+africastalking.api_key = settings.AFRICASTALKING_API_KEY
+africastalking_username = settings.AFRICASTALKING_USERNAME
 
 
 def register(request):
@@ -20,6 +25,18 @@ def register(request):
             user = form.save()
             print(f"User created: {user.username}")
             messages.success(request, f'Your account has been created! You can now log in.')
+            
+            africastalking_api_key = africastalking.api_key
+    
+            africastalking.initialize(africastalking_username, africastalking_api_key)
+            sms = africastalking.SMS
+            message = "Welcome Haki Mikononi. You account has been created."
+            response = sms.send(message, [profile.contact_number])
+            print("SMS response:", response)
+
+
+
+
             print("Redirecting to login")
             return redirect('login')
         else:
