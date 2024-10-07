@@ -1,0 +1,15 @@
+africastalking==1.2.9
+asgiref==3.8.1
+backports.zoneinfo==0.2.1
+certifi==2024.8.30
+charset-normalizer==3.3.2
+crispy-bootstrap4==2024.10
+Django==4.2.16
+django-crispy-forms==1.13.0
+idna==3.10
+pillow==10.4.0
+requests==2.32.3
+schema==0.7.7
+sqlparse==0.5.1
+typing-extensions==4.12.2
+urllib3==2.2.3
