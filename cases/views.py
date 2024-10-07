@@ -8,10 +8,16 @@ from django.core.paginator import Paginator
 from users.models import Profile
 import africastalking  
 
-# Initialize Africa's Talking API
+# import the dotenv module
+import os
+from dotenv import load_dotenv
+
+# load .env file
+load_dotenv()
+
 def initialize_africastalking():
-    username = 'Kwepo'  
-    api_key = 'atsk_dbf2604668d12aaa067c0764124363a41126a7592ad6b38e3c2726a70ac0b501d15b3f82'  
+    username = os.getenv('AFRICASTALKING_USERNAME')  
+    api_key = os.getenv('AFRICASTALKING_API_KEY')    
     africastalking.initialize(username, api_key)
 
 @login_required
