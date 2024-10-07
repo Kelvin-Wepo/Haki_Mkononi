@@ -38,7 +38,7 @@ Landing Page![alt text](<Haki 1.png>)
 
 - Backend: Django
 - Database: PostgreSQL
-- Frontend: HTML, CSS, JavaScript (specific framework not specified in the provided code)
+- Frontend: HTML, CSS, JavaScript
 - SMS Integration: Africa's Talking API
 - File Storage: Django's built-in file handling (for document uploads)
 
@@ -96,7 +96,6 @@ For regular users:
 4. Upload relevant documents
 5. Track case progress and receive SMS notifications
 
-![Mobile View Screenshot](https://via.placeholder.com/300x600?text=Mobile+View+Screenshot)
 
 ## API Integration
 
