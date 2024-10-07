@@ -46,7 +46,7 @@ Landing Page![alt text](<Haki 1.png>)
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/haki_mkononi.git
+   git clone https://github.com/Kelvin-Wepo/Haki_Mkononi
    cd haki_mkononi
    ```
 
