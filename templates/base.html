@@ -62,6 +62,11 @@
                 </ul>
             </div>
         </div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'notifications' %}" id="notification-bell">
+            🔔 <span id="notification-count">0</span>
+        </a>
+        {% endif %}
     </nav>
 
     <main class="container mt-4">
@@ -77,6 +82,29 @@
         {% block content %}
         {% endblock %}
     </main>
+    <script>
+        const notificationCount = document.getElementById('notification-count');
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/notifications/');
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            updateNotificationCount();
+        };
+
+        function updateNotificationCount() {
+            fetch('/notifications/count/')
+                .then(response => response.json())
+                .then(data => {
+                    notificationCount.textContent = data.count;
+                });
+        }
+
+        // Update count every 30 seconds
+        setInterval(updateNotificationCount, 30000);
+
+        // Initial count update
+        updateNotificationCount();
+    </script>
 
     <footer class="bg-primary text-white text-center text-lg-start mt-4">
         <div class="container p-4">
