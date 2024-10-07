@@ -22,5 +22,5 @@ urlpatterns = [
     path('', include('core.urls')),
     path('users/', include('users.urls')),
     path('cases/', include('cases.urls')),
-    # path('messages/', include('messages.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
