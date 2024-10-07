@@ -36,8 +36,8 @@ Landing Page![alt text](<Haki 1.png>)
 
 ## Technologies Used
 
-- Backend: Django (Python web framework)
-- Database: PostgreSQL (assumed, based on Django usage)
+- Backend: Django
+- Database: PostgreSQL
 - Frontend: HTML, CSS, JavaScript (specific framework not specified in the provided code)
 - SMS Integration: Africa's Talking API
 - File Storage: Django's built-in file handling (for document uploads)
