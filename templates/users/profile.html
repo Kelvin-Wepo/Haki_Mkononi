@@ -107,8 +107,8 @@
             <main role="main" class="col-md-9 main-content">
                 <div class="profile-header mt-4">
                     <h2>{{ user.username }}'s Profile</h2>
-                    {% if profile.image %}
-                        <img src="{{ profile.image.url }}" alt="Profile Picture" class="profile-image">
+                    {% if user.profile.image %}
+                        <img src="{{ user.profile.image.url }}" alt="Profile Picture" class="profile-image">
                     {% else %}
                         <img src="{% static 'default.jpg' %}" alt="Default Profile Picture" class="profile-image">
                     {% endif %}
@@ -119,17 +119,20 @@
 
                 <div class="card">
                     <h4>User Information</h4>
-                    <form method="POST" enctype="multipart/form-data" class="mt-3">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            {{ u_form.as_p }}
-                        </div>
-                        <h4>Profile Information</h4>
-                        <div class="form-group">
-                            {{ p_form.as_p }}
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
-                    </form>
+                    <div class="mt-3">
+                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                    </div>
+                    
+                    <h4 class="mt-4">Profile Information</h4>
+                    <div class="mt-3">
+                        <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+                        <p><strong>Location:</strong> {{ user.profile.location }}</p>
+                        <p><strong>Birth Date:</strong> {{ user.profile.birth_date }}</p>
+                        <!-- Add any other profile fields you have -->
+                    </div>
 
                     <!-- Display messages -->
                     {% if messages %}
