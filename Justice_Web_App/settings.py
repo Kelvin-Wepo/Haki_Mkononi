@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'cases',
     'crispy_forms',
     'africastalking',
+    'channels',
+    'notifications',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -77,6 +79,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Justice_Web_App.wsgi.application'
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 
 # Database
