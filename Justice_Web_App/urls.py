@@ -23,4 +23,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('cases/', include('cases.urls')),
     path('notifications/', include('notifications.urls')),
+    path('video-call/', include('video_call.urls')),
 ]
