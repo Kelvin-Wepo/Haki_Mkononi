@@ -2,23 +2,43 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Your Cases</h2>
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-center">Your Cases</h2>
+        <a href="{% url 'call_history' %}" class="btn btn-secondary">
+            <i class="fas fa-history me-2"></i> View Call History <!-- Call history icon -->
+        </a>
+    </div>
 
+    <!-- Case Cards or No Cases Alert -->
     {% if cases %}
     <div class="row">
         {% for case in cases %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title">{{ case.title }}</h5>
+            <div class="card shadow-sm h-100 border-0">
+                <!-- Card Header -->
+                <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0">{{ case.title }}</h5>
+                    <span class="badge badge-light">{{ case.status }}</span> <!-- Case status badge -->
                 </div>
+                
+                <!-- Card Body -->
                 <div class="card-body">
-                    <p class="card-text"><strong>Status:</strong> {{ case.status }}</p>
-                    <p class="card-text"><strong>Description:</strong> {{ case.description|truncatewords:20 }}</p>
-                    <p class="card-text"><strong>Date Filed:</strong> {{ case.created_at|date:"d M, Y" }}</p>
+                    <p class="card-text">
+                        <i class="fas fa-info-circle me-1"></i> <!-- Description icon -->
+                        <strong>Description:</strong> {{ case.description|truncatewords:20 }}
+                    </p>
+                    <p class="card-text">
+                        <i class="fas fa-calendar-alt me-1"></i> <!-- Date icon -->
+                        <strong>Date Filed:</strong> {{ case.created_at|date:"d M, Y" }}
+                    </p>
                 </div>
-                <div class="card-footer text-right">
-                    <a href="{% url 'case_detail' case.id %}" class="btn btn-info">View Details</a>
+
+                <!-- Card Footer -->
+                <div class="card-footer bg-light text-right">
+                    <a href="{% url 'case_detail' case.id %}" class="btn btn-info">
+                        <i class="fas fa-folder-open me-1"></i> View Details <!-- View details icon -->
+                    </a>
                 </div>
             </div>
         </div>
@@ -26,6 +46,7 @@
     </div>
     {% else %}
     <div class="alert alert-warning text-center" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i> <!-- Exclamation icon -->
         You have no cases at the moment.
     </div>
     {% endif %}
