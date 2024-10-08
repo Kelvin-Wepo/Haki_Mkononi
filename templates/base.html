@@ -1,4 +1,4 @@
-{% load static %}  
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +9,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block extra_css %}{% endblock %}
+    <style>
+        /* Ensure the body takes full height and uses Flexbox */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main content area takes available space */
+        main {
+            flex: 1;
+        }
+
+        /* Ensure footer is at the bottom */
+        footer {
+            background-color: #007bff; /* Keep the original background color */
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -37,11 +57,6 @@
                                 <i class="fas fa-file-alt"></i> Create Case
                             </a>
                         </li>
-                        {% comment %} <li class="nav-item">
-                            <a class="nav-link" href="{% url 'case_messages' %}">
-                                <i class="fas fa-envelope"></i> Messages
-                            </a>
-                        </li> {% endcomment %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">
                                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -82,31 +97,8 @@
         {% block content %}
         {% endblock %}
     </main>
-    <script>
-        const notificationCount = document.getElementById('notification-count');
-        const socket = new WebSocket('ws://' + window.location.host + '/ws/notifications/');
 
-        socket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            updateNotificationCount();
-        };
-
-        function updateNotificationCount() {
-            fetch('/notifications/count/')
-                .then(response => response.json())
-                .then(data => {
-                    notificationCount.textContent = data.count;
-                });
-        }
-
-        // Update count every 30 seconds
-        setInterval(updateNotificationCount, 30000);
-
-        // Initial count update
-        updateNotificationCount();
-    </script>
-
-    <footer class="bg-primary text-white text-center text-lg-start mt-4">
+    <footer class="bg-primary text-white text-center text-lg-start">
         <div class="container p-4">
             <div class="row">
                 <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
