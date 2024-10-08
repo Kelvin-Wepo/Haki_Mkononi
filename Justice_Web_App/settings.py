@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'africastalking',
     'channels',
     'notifications',
+    'video_call',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -81,10 +82,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Justice_Web_App.wsgi.application'
 
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer'
+#     }
+# }
+
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer'
-    }
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
 
 
