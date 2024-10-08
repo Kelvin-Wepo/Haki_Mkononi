@@ -1,0 +1,73 @@
+{% extends 'video_call/base.html' %}
+
+{% block video_call_content %}
+<div class="container mt-4">
+    <!-- User Calls Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="fas fa-phone-alt me-2"></i> <!-- Call icon -->
+            <h3 class="mb-0">Your Calls</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% if user_calls %}
+                    {% for call in user_calls %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-user-circle me-2"></i> <!-- User icon -->
+                            Call with <strong>{{ call.official.get_full_name }}</strong>
+                            <br>
+                            <i class="fas fa-calendar-alt me-1"></i> <!-- Date icon -->
+                            {{ call.created_at|date:"F j, Y, g:i a" }}
+                        </div>
+                        <span class="badge bg-info text-dark">
+                            <i class="fas fa-info-circle me-1"></i> <!-- Status icon -->
+                            {{ call.get_status_display }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">
+                        <i class="fas fa-exclamation-circle me-2"></i> <!-- Warning icon -->
+                        No calls found.
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Calls You've Officiated Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white d-flex align-items-center">
+            <i class="fas fa-gavel me-2"></i> <!-- Gavel/official icon -->
+            <h3 class="mb-0">Calls You've Officiated</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% if official_calls %}
+                    {% for call in official_calls %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-user-circle me-2"></i> <!-- User icon -->
+                            Call with <strong>{{ call.user.get_full_name }}</strong>
+                            <br>
+                            <i class="fas fa-calendar-alt me-1"></i> <!-- Date icon -->
+                            {{ call.created_at|date:"F j, Y, g:i a" }}
+                        </div>
+                        <span class="badge bg-info text-dark">
+                            <i class="fas fa-info-circle me-1"></i> <!-- Status icon -->
+                            {{ call.get_status_display }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">
+                        <i class="fas fa-exclamation-circle me-2"></i> <!-- Warning icon -->
+                        No officiated calls found.
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

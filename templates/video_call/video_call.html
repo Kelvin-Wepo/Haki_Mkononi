@@ -1,0 +1,99 @@
+{% extends 'video_call/base.html' %}
+
+{% block video_call_content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Local and Remote Video -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white d-flex align-items-center">
+                    <i class="fas fa-video me-2"></i> <!-- Video icon -->
+                    <h5 class="mb-0">Your Video</h5>
+                </div>
+                <div class="card-body p-0">
+                    <video id="local-video" class="w-100" autoplay muted></video> <!-- Local video -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white d-flex align-items-center">
+                    <i class="fas fa-user-friends me-2"></i> <!-- Remote user icon -->
+                    <h5 class="mb-0">Remote Video</h5>
+                </div>
+                <div class="card-body p-0">
+                    <video id="remote-video" class="w-100" autoplay></video> <!-- Remote video -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Controls -->
+    <div class="d-flex justify-content-center">
+        <button id="start-call" class="btn btn-primary btn-lg me-3">
+            <i class="fas fa-phone-alt me-1"></i> Start Call <!-- Phone icon -->
+        </button>
+        <button id="end-call" class="btn btn-danger btn-lg" style="display: none;">
+            <i class="fas fa-phone-slash me-1"></i> End Call <!-- Hang-up icon -->
+        </button>
+    </div>
+</div>
+
+<!-- PeerJS and WebSocket Script -->
+<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+<script>
+    const roomName = "{{ room_name }}";
+    const userId = "{{ request.user.id }}";
+    let peer;
+    let localStream;
+    let call;
+
+    const socket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/call/' + roomName + '/'
+    );
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.type === 'user-connected' && data.userId !== userId) {
+            connectToNewUser(data.userId);
+        }
+    };
+
+    document.getElementById('start-call').addEventListener('click', () => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localStream = stream;
+                document.getElementById('local-video').srcObject = stream;
+                peer = new Peer(userId);
+                peer.on('call', incomingCall => {
+                    incomingCall.answer(localStream);
+                    incomingCall.on('stream', remoteStream => {
+                        document.getElementById('remote-video').srcObject = remoteStream;
+                    });
+                    call = incomingCall;
+                });
+                socket.send(JSON.stringify({ type: 'join', userId: userId }));
+                document.getElementById('start-call').style.display = 'none';
+                document.getElementById('end-call').style.display = 'block';
+            });
+    });
+
+    document.getElementById('end-call').addEventListener('click', () => {
+        if (call) call.close();
+        if (localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+        }
+        if (peer) peer.destroy();
+        window.location.href = "{% url 'case_list' %}";
+    });
+
+    function connectToNewUser(userId) {
+        const call = peer.call(userId, localStream);
+        call.on('stream', remoteStream => {
+            document.getElementById('remote-video').srcObject = remoteStream;
+        });
+    }
+</script>
+{% endblock %}
