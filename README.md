@@ -1,4 +1,4 @@
-Here’s the updated README with the new video call feature:
+Here’s a redrafted version of your README that incorporates the new notification feature based on case status changes:
 
 ---
 
@@ -12,6 +12,7 @@ Here’s the updated README with the new video call feature:
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Notifications](#notifications)
 - [API Integration](#api-integration)
 - [Contributing](#contributing)
 - [License](#license)
@@ -20,36 +21,40 @@ Here’s the updated README with the new video call feature:
 
 Haki_mkononi is a web application designed to streamline case management for legal professionals and provide easy access to legal services for citizens. The name "Haki_mkononi" translates to "Justice in your hands" in Swahili, emphasizing the app's goal of making legal processes more accessible.
 
-Landing Page![alt text](<Haki 1.png>)
+Landing Page ![alt text](<Haki 1.png>)
 
 ## Features
 
-- **User Authentication:** Secure login for citizens, legal professionals, and administrators
-- **Case Management:**
+- **User Authentication**: Secure login for citizens, legal professionals, and administrators
+- **Case Management**:
   - Create and submit legal cases
   - Upload and manage case-related documents
   - Track case status and updates
-- **Role-based Access Control:**
+- **Role-based Access Control**:
   - Citizens can view and manage their own cases
   - Legal professionals and admins have broader access to case information
-- **Search Functionality:** Advanced search options to find cases by various criteria
-- **SMS Notifications:** Automatic SMS updates on case status changes
-- **Responsive Design:** Accessible on both desktop and mobile devices
-- **Video Call Scheduling:** Users can schedule video calls with legal officials for virtual consultations and case discussions.
+- **Search Functionality**: Advanced search options to find cases by various criteria
+- **Notification System**:
+  - Real-time notifications when a case is created or its status changes (open, closed, pending)
+  - Users can view, track, and manage their notifications directly in the app
+- **SMS Notifications**: Automatic SMS updates on case status changes
+- **Responsive Design**: Accessible on both desktop and mobile devices
+- **Video Call Scheduling**: Users can schedule video calls with legal officials for virtual consultations and case discussions
 
 ![alt text](Haki2.png)
 
 ## Technologies Used
 
-- **Backend:** Django
-- **Database:** PostgreSQL
-- **Frontend:** HTML, CSS, JavaScript
-- **SMS Integration:** Africa's Talking API
-- **File Storage:** Django's built-in file handling (for document uploads)
-- **Video Call Integration:** WebRTC for video calling features
-![alt text](haki4.png)
+- **Backend**: Django
+- **Database**: PostgreSQL
+- **Frontend**: HTML, CSS, JavaScript
+- **Notifications**: Real-time in-app notifications and SMS via Africa's Talking API
+- **File Storage**: Django's built-in file handling (for document uploads)
+- **Video Call Integration**: WebRTC for video calling features
 
+![alt text](haki4.png)
 ![alt text](<Screenshot from 2024-10-08 04-56-48.png>)
+
 ## Installation
 
 1. Clone the repository:
@@ -102,8 +107,29 @@ For regular users:
 2. Log in to the system
 3. Create a new case or search for existing cases (based on user role)
 4. Upload relevant documents
-5. Track case progress and receive SMS notifications
+5. Track case progress and receive notifications in-app and via SMS
 6. **Schedule video calls** with legal officials for consultations and case discussions
+
+## Notifications
+
+Haki_mkononi comes with a robust notification system that keeps users informed about the status of their cases.
+
+- **In-App Notifications**: Users receive notifications in the app whenever:
+  - A new case is created.
+  - The status of their case changes (e.g., from "under review" to "open" or "closed").
+- **Notification Features**:
+  - Users can view all notifications in the "Notifications" section.
+  - Notifications can be marked as read once reviewed.
+  - The notification system is designed to ensure that users stay updated on their case progress in real-time.
+  
+  Example notifications:
+  - "Your case **'Case Title'** has been successfully created."
+  - "Your case **'Case Title'** has been moved to **open**."
+  - "Your case **'Case Title'** has been **closed**."
+
+  ![alt text](notifications.png)
+
+- **SMS Notifications**: SMS notifications are sent for key status changes to keep users informed, even when they are not logged into the application.
 
 ## API Integration
 
