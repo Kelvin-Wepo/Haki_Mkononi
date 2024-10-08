@@ -12,7 +12,7 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import notifications.routing
-
+import video_call.routing
 
 
 from django.core.asgi import get_asgi_application
@@ -26,6 +26,14 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter(
             notifications.routing.websocket_urlpatterns
+        )
+    ),
+})
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            video_call.routing.websocket_urlpatterns
         )
     ),
 })
