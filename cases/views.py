@@ -59,8 +59,13 @@ def create_case(request):
 @login_required
 def case_detail(request, pk):
     case = get_object_or_404(Case, pk=pk)
-    return render(request, 'cases/case_detail.html', {'case': case})
-
+    context = {
+        'case': case,
+        'can_initiate_call': hasattr(request.user, 'profile') and 
+                             request.user.profile.role == 'citizen' and 
+                             case.assigned_official is not None
+    }
+    return render(request, 'cases/case_detail.html', context)
 @login_required
 def case_list(request):
     # Ensure the user has a profile
