@@ -11,8 +11,13 @@
         <p><strong>Description:</strong> {{ case.description }}</p>
         <p><strong>Created by:</strong> {{ case.created_by.username }}</p>
         <p><strong>Created at:</strong> {{ case.created_at }}</p>
-        {% if case.assigned_to %}
-            <p><strong>Assigned to:</strong> {{ case.assigned_to.username }}</p>
+        {% if case.assigned_official %}
+            <p><strong>Assigned to:</strong> {{ case.assigned_official.username }}</p>
+            {% if user.profile.role == 'citizen' %}
+                <a href="{% url 'initiate_call' official_id=case.assigned_official.id %}" class="btn btn-primary">
+                    Video Call with Official
+                </a>
+            {% endif %}
         {% endif %}
         
         <h3 class="mt-4">Documents</h3>
@@ -28,7 +33,4 @@
         </ul>
     </div>
 </div>
-{% comment %} <div class="mt-4">
-    <a href="{% url 'case_messages' case.id %}" class="btn btn-primary">View Messages</a>
-</div> {% endcomment %}
 {% endblock %}
