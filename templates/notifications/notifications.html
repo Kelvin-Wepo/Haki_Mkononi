@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Notifications</h2>
-<ul id="notification-list">
-    {% for notification in notifications %}
-    <li data-id="{{ notification.id }}">
-        {{ notification.message }}
-        <button class="mark-read">Mark as Read</button>
-    </li>
-    {% empty %}
-    <li>No new notifications</li>
-    {% endfor %}
-</ul>
+<div class="notifications-container">
+    <h2 class="notifications-heading">Notifications</h2>
+    <ul id="notification-list" class="notifications-list">
+        {% for notification in notifications %}
+        <li class="notification-item" data-id="{{ notification.id }}">
+            <span class="notification-message">{{ notification.message }}</span>
+            <button class="mark-read-btn">Mark as Read</button>
+        </li>
+        {% empty %}
+        <li class="notification-item no-notification">
+            No new notifications
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
 <script>
-    document.querySelectorAll('.mark-read').forEach(button => {
+    document.querySelectorAll('.mark-read-btn').forEach(button => {
         button.addEventListener('click', function() {
             const notificationId = this.parentElement.dataset.id;
             fetch(`/notifications/mark_as_read/${notificationId}/`, {
@@ -47,4 +51,79 @@
         return cookieValue;
     }
 </script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* General styling for the notifications page */
+    .notifications-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .notifications-heading {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Notification list */
+    .notifications-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .notification-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Empty notifications styling */
+    .no-notification {
+        text-align: center;
+        color: #999;
+        font-style: italic;
+    }
+
+    /* Notification message */
+    .notification-message {
+        font-size: 1rem;
+        color: #333;
+        max-width: 70%;
+    }
+
+    /* Mark as read button */
+    .mark-read-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Hover effects */
+    .mark-read-btn:hover {
+        background-color: #218838;
+    }
+
+    .notification-item:hover {
+        background-color: #f1f1f1;
+    }
+</style>
 {% endblock %}
