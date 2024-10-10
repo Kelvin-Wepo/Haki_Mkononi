@@ -6,6 +6,7 @@ from .forms import CaseForm, DocumentForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 from users.models import Profile
+from users.models import Profile as UserProfile
 import africastalking  
 
 # import the dotenv module
@@ -20,6 +21,7 @@ def initialize_africastalking():
     api_key = os.getenv('AFRICASTALKING_API_KEY')    
     africastalking.initialize(username, api_key)
 
+
 @login_required
 def create_case(request):
     if request.method == 'POST':
@@ -33,22 +35,30 @@ def create_case(request):
             document = document_form.save(commit=False)
             document.case = case
             document.save()
-
+            
             # Send SMS notification
             initialize_africastalking()
-            user_name = request.user.get_full_name()  
-            category = case.category  
-            # phone_number = request.user.profile.phone_number 
-
-            message = f"Dear {user_name}, your case on {category} has been submitted. We will let you know when the hearing begins."
-            sender_id = "20880"  # Sender ID
-
-            try:
-                # Send SMS with a specified sender ID
-                response = africastalking.SMS.send(message, [phone_number], sender_id=sender_id)
-                messages.success(request, 'Your case has been submitted successfully! An SMS has been sent to your phone.')
-            except Exception as e:
-                messages.error(request, f'Your case has been submitted, but there was an error sending the SMS: {str(e)}')
+            user_name = request.user.get_full_name()
+            category = case.category
+            
+            # Get the user profile from the users app
+            user_profile = UserProfile.objects.get(user=request.user)
+            
+            # Ensure phone_number is a string and not None
+            phone_number = str(user_profile.phone_number) if user_profile.phone_number else None
+            
+            if phone_number:
+                message = f"Dear {user_name}, your case on {category} has been submitted. We will update you on other legal proceedings."
+                sender_id = "20880"  # Sender ID
+                
+                try:
+                    # Send SMS with a specified sender ID
+                    response = africastalking.SMS.send(message, [phone_number], sender_id=sender_id)
+                    messages.success(request, 'Your case has been submitted successfully! An SMS has been sent to your phone.')
+                except Exception as e:
+                    messages.error(request, f'Your case has been submitted, but there was an error sending the SMS: {str(e)}')
+            else:
+                messages.warning(request, 'Your case has been submitted successfully, but we could not send an SMS due to missing phone number.')
             
             return redirect('case_detail', pk=case.pk)
     else:
