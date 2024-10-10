@@ -16,7 +16,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     bio = models.TextField(blank=True, null=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=False, null=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='citizen')
 
     def __str__(self):
